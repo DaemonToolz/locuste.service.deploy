@@ -1,0 +1,5 @@
+{
+    "host":HOST,
+    "port":PORT_HTTP,
+    "socket_port":PORT_WEB_SOCKET
+}
