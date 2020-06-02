@@ -36,4 +36,11 @@ var routes = Routes{
 		"/versions",
 		GetAvailableVersions,
 	},
+
+	Route{
+		"Get available versions",
+		"DELETE",
+		"/delete/{version}",
+		DeleteVersion,
+	},
 }

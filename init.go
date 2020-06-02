@@ -9,28 +9,15 @@ import (
 	"time"
 )
 
-var serveMux *http.ServeMux
-
 func main() {
 
 	prepareLogs()
 	createRepository()
 	log.Println("Dépôt créé et prêt")
-	serveMux = http.NewServeMux()
 	router = NewRouter()
 	initMiddleware(router)
-
+	initSocketServer()
 	RestartHTTPServer()
-
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				log.Println("Une erreur est survenue après l'exposition du serveur", r)
-			}
-		}()
-		log.Println("WebSocket Server online")
-		serveMux.Handle("/socket.io/", server)
-	}()
 
 	RestartSocketServer()
 
@@ -39,7 +26,7 @@ func main() {
 
 	select {
 	case <-sigChan:
-
+		server.Close()
 		time.Sleep(5 * time.Second)
 		logFile.Close()
 		os.Exit(0)
@@ -73,9 +60,9 @@ func RestartSocketServer() {
 				log.Println("Une erreur est survenue dans le code du Serveur HTTP", r)
 			}
 		}()
-
+		http.Handle("/socket.io/", server)
 		log.Println("Serving Websocket at ", appConfig.socketListenURI(), "")
-		log.Println(http.ListenAndServe(appConfig.socketListenURI(), serveMux))
+		log.Println(http.ListenAndServe(appConfig.socketListenURI(), nil))
 
 	}()
 

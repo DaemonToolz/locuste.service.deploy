@@ -66,6 +66,22 @@ func Install(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// DeleteVersion Supprimer une version installée
+func DeleteVersion(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+
+	go DeleteVersionFiles("./repo/archive", vars["version"])
+	go DeleteVersionFiles("./repo/versions", vars["version"])
+
+	if err := json.NewEncoder(w).Encode(struct {
+		Success bool `json:"success"`
+	}{true}); err != nil {
+		failOnError(err, "Unable to load the message")
+		panic(err)
+	}
+}
+
 // GetAvailableVersions Débute la procédure d'installation
 func GetAvailableVersions(w http.ResponseWriter, r *http.Request) {
 

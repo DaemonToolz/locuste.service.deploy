@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"syscall"
 )
 
@@ -216,6 +217,28 @@ func RemoveContents(dir string) error {
 		err = os.RemoveAll(filepath.Join(dir, name))
 		if err != nil {
 			return err
+		}
+	}
+	return nil
+}
+
+// DeleteVersionFiles Supprime le contenu du répertoire des versions
+func DeleteVersionFiles(root, version string) error {
+	d, err := os.Open(root)
+	if err != nil {
+		return err
+	}
+	defer d.Close()
+	names, err := d.Readdirnames(-1)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		if strings.Contains(name, version) {
+			err = os.RemoveAll(filepath.Join(root, name))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil

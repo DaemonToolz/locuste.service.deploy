@@ -4,7 +4,7 @@ package main
 type FileCopyInfo struct {
 	CurrentFile string `json:"current_file"`
 	FileCount   int    `json:"file_count"`
-	FileIndex   int    `json:"fil_index"`
+	FileIndex   int    `json:"file_index"`
 }
 
 // OperationStatus Statut de l'opération
