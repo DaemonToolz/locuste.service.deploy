@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 )
 
 // ListVersions Récupère la liste des versions logicielles disponibles
@@ -30,14 +31,15 @@ func ListVersions() []string {
 }
 
 // Unzip extraction d'un fichier archive
-func Unzip(src, dest string) error {
+func Unzip(src, dest string) {
 	r, err := zip.OpenReader(src)
 	if err != nil {
-		return err
+		failOnError(err, "Une erreur est survenue lors de l'ouverture du zip")
+		return
 	}
 	defer func() {
 		if err := r.Close(); err != nil {
-			panic(err)
+			failOnError(err, "Une erreur est survenue lors de l'ouverture du zip")
 		}
 	}()
 
@@ -45,20 +47,21 @@ func Unzip(src, dest string) error {
 	for _, f := range r.File {
 		err := extractAndWriteFile(dest, f)
 		if err != nil {
-			return err
+			failOnError(err, fmt.Sprintf("Une erreur est survenue lors du dézippage pour le fichier : %s", f.Name))
 		}
 	}
 
-	return nil
 }
 
 func extractAndWriteFile(dest string, f *zip.File) error {
 	rc, err := f.Open()
 	if err != nil {
+		failOnError(err, "Une erreur est survenue lors de l'ouverture")
 		return err
 	}
 	defer func() {
 		if err := rc.Close(); err != nil {
+			failOnError(err, "Une erreur est survenue lors de la fermeture")
 			panic(err)
 		}
 	}()
@@ -71,16 +74,19 @@ func extractAndWriteFile(dest string, f *zip.File) error {
 		os.MkdirAll(filepath.Dir(path), f.Mode())
 		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 		if err != nil {
+			failOnError(err, "Une erreur est survenue lors de la création")
 			return err
 		}
 		defer func() {
 			if err := f.Close(); err != nil {
+				failOnError(err, "Une erreur est survenue lors de la fermeture")
 				panic(err)
 			}
 		}()
 
 		_, err = io.Copy(f, rc)
 		if err != nil {
+			failOnError(err, "Une erreur est survenue lors de la copie")
 			return err
 		}
 	}
@@ -131,7 +137,7 @@ func CopyDirectory(scrDir, dest string, indicator *FileCopyInfo) error {
 		if err := os.Chmod(destPath, entry.Mode()); err != nil {
 			return err
 		}
-
+		time.Sleep(75 * time.Millisecond)
 	}
 	return nil
 }
