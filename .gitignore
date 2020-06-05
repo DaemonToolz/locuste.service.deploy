@@ -15,7 +15,7 @@ go.mod
 go.sum
 repo/
 *.json
-*.log
+logs/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/

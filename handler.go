@@ -90,3 +90,24 @@ func GetAvailableVersions(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 }
+
+// GetInstalledVersion Récupère la version installée
+func GetInstalledVersion(w http.ResponseWriter, r *http.Request) {
+	if err := json.NewEncoder(w).Encode(GetDiskVersion()); err != nil {
+		failOnError(err, "Unable to load the message")
+		panic(err)
+	}
+}
+
+// Uninstall Débute la procédure de désinstallation
+func Uninstall(w http.ResponseWriter, r *http.Request) {
+
+	go StartUninstallProcedure()
+
+	if err := json.NewEncoder(w).Encode(struct {
+		Success bool `json:"success"`
+	}{true}); err != nil {
+		failOnError(err, "Unable to load the message")
+		panic(err)
+	}
+}

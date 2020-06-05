@@ -94,12 +94,15 @@ func extractAndWriteFile(dest string, f *zip.File) error {
 }
 
 // CopyDirectory Copier un répertoire cible (récursif)
-func CopyDirectory(scrDir, dest string, indicator *FileCopyInfo) error {
+func CopyDirectory(scrDir, version, dest string, isRoot bool, indicator *FileCopyInfo) error {
 	entries, err := ioutil.ReadDir(scrDir)
 	if err != nil {
 		return err
 	}
 	for _, entry := range entries {
+		if isRoot && entry.Name() != version {
+			continue
+		}
 		sourcePath := filepath.Join(scrDir, entry.Name())
 		destPath := filepath.Join(dest, entry.Name())
 
@@ -118,7 +121,7 @@ func CopyDirectory(scrDir, dest string, indicator *FileCopyInfo) error {
 			if err := CreateIfNotExists(destPath, 0755); err != nil {
 				return err
 			}
-			if err := CopyDirectory(sourcePath, destPath, indicator); err != nil {
+			if err := CopyDirectory(sourcePath, version, destPath, false, indicator); err != nil {
 				return err
 			}
 		default:

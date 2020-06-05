@@ -43,4 +43,17 @@ var routes = Routes{
 		"/delete/{version}",
 		DeleteVersion,
 	},
+	Route{
+		"Get Installed version",
+		"GET",
+		"/version/current",
+		GetInstalledVersion,
+	},
+
+	Route{
+		"Start uninstall procedure",
+		"GET",
+		"/uninstall",
+		Uninstall,
+	},
 }

@@ -24,3 +24,15 @@ type ProgressIndicator struct {
 	Message string          `json:"message"`
 	Status  OperationStatus `json:"status"`
 }
+
+// ProjectVersion Version globale du projet
+type ProjectVersion struct {
+	GlobalVersion   string       `json:"global_version"`
+	DetailedVersion []AppVersion `json:"detailed_version"`
+}
+
+// AppVersion Version globale du projet
+type AppVersion struct {
+	Name    string `json:"app_name"`
+	Version string `json:"version"`
+}
