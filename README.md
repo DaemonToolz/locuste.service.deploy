@@ -1,6 +1,16 @@
 # locuste.service.deploy
 LOCUSTE - Service de réception / déploiement et mise à jour
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a9b0ddc3726644e8a27249c395f0ed48)](https://www.codacy.com/manual/axel.maciejewski/locuste.service.deploy?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=DaemonToolz/locuste.service.deploy&amp;utm_campaign=Badge_Grade)
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=alert_status)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=security_rating)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=bugs)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=coverage)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
+
 Le project Locuste se divise en 4 grandes sections : 
 * Automate (Drone Automata) PYTHON (https://github.com/DaemonToolz/locuste.drone.automata)
 * Unité de contrôle (Brain) GOLANG (https://github.com/DaemonToolz/locuste.service.brain)
