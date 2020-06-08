@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 // StartInstallProcedure Démarrer la procédure d'installation
@@ -56,7 +57,7 @@ func StartUninstallProcedure() {
 }
 
 // GetDiskVersion Récupère la version installée sur le disque
-func GetDiskVersion() ProjectVersion {
+func GetDiskVersion(rootVersion bool) ProjectVersion {
 
 	entries, err := ioutil.ReadDir("/home/pi/Documents/locuste/")
 	// On ne devrait avoir qu'un seul résultat
@@ -77,7 +78,10 @@ func GetDiskVersion() ProjectVersion {
 		path := fmt.Sprintf("/home/pi/Documents/locuste/%s", entry.Name())
 
 		version.GlobalVersion = entry.Name()
-		extractApps(path, &version)
+		if !rootVersion {
+			extractApps(path, &version)
+		}
+
 	}
 	return version
 }
@@ -99,7 +103,8 @@ func extractApps(path string, pVersion *ProjectVersion) {
 }
 
 func extractAppVersion(path, app string, pVersion *ProjectVersion) {
-	appVersions, err := ioutil.ReadDir(fmt.Sprintf("%s/%s", path, app))
+	appPath := fmt.Sprintf("%s/%s", path, app)
+	appVersions, err := ioutil.ReadDir(appPath)
 	if err != nil {
 		failOnError(err, "Une erreur est survenue lors de l'extraction de la version")
 		return
@@ -108,14 +113,19 @@ func extractAppVersion(path, app string, pVersion *ProjectVersion) {
 		if !appVersion.IsDir() {
 			continue
 		}
+
+		proc := getProcess(app)
+		var path string
+		var err error
+		if proc != nil {
+			path, err = proc.Path()
+		}
+
 		pVersion.DetailedVersion = append(pVersion.DetailedVersion, AppVersion{
-			Name:    app,
-			Version: appVersion.Name(),
+			Name:      app,
+			IsRunning: proc != nil && err == nil && proc.Pid() > 0 && strings.Contains(path, appPath),
+			Version:   appVersion.Name(),
 		})
 	}
 
 }
-
-/*
-
- */

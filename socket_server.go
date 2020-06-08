@@ -55,3 +55,15 @@ func broadcastIndicator(indicator FileCopyInfo) {
 		server.BroadcastToRoom("/", "notifications", "progress", indicator)
 	}
 }
+
+func broadcastProcessUpdate(app AppVersion) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println("Une erreur est survenue lors de l'envoi d'information WS", r)
+		}
+	}()
+	if server != nil {
+		log.Println("update", app)
+		server.BroadcastToRoom("/", "notifications", "update", app)
+	}
+}

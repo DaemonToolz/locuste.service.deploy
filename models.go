@@ -33,6 +33,24 @@ type ProjectVersion struct {
 
 // AppVersion Version globale du projet
 type AppVersion struct {
-	Name    string `json:"app_name"`
-	Version string `json:"version"`
+	Name      string `json:"app_name"`
+	Version   string `json:"version"`
+	IsRunning bool   `json:"is_running"`
+}
+
+// CommandType Commande à envoyer
+type CommandType int
+
+const (
+	// Start Démarrer
+	Start CommandType = iota
+	// Stop Arrêter
+	Stop CommandType = iota
+)
+
+// ExecCommand Version globale du projet
+type ExecCommand struct {
+	Application string      `json:"application"`
+	Version     string      `json:"version"`
+	Command     CommandType `json:"command"`
 }

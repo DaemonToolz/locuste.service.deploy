@@ -49,6 +49,12 @@ var routes = Routes{
 		"/version/current",
 		GetInstalledVersion,
 	},
+	Route{
+		"Run a specific version",
+		"POST",
+		"/version/run",
+		RunCommand,
+	},
 
 	Route{
 		"Start uninstall procedure",

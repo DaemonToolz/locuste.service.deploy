@@ -5,12 +5,29 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
+
+	"github.com/keybase/go-ps"
 )
 
 func main() {
+	processes, err := ps.Processes()
+	if err != nil {
+		failOnError(err, "Error :")
+	}
+	procCount := 0
+	for index := range processes {
 
+		if strings.Contains(os.Args[0], processes[index].Executable()) {
+			procCount++
+		}
+
+		if procCount > 1 {
+			return
+		}
+	}
 	prepareLogs()
 	createRepository()
 	log.Println("Dépôt créé et prêt")

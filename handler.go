@@ -43,7 +43,8 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 
 	io.Copy(out, file)
-	go Unzip(sourcePath, fmt.Sprintf("./repo/versions/%s/%s", vars["version"], strings.Split(header.Filename, ".")[0]))
+	fnameArr := strings.Split(header.Filename, ".")
+	go Unzip(sourcePath, fmt.Sprintf("./repo/versions/%s/%s", vars["version"], strings.Join(fnameArr[:len(fnameArr)-1], ".")))
 	if err := json.NewEncoder(w).Encode(struct {
 		Success bool `json:"success"`
 	}{true}); err != nil {
@@ -93,7 +94,7 @@ func GetAvailableVersions(w http.ResponseWriter, r *http.Request) {
 
 // GetInstalledVersion Récupère la version installée
 func GetInstalledVersion(w http.ResponseWriter, r *http.Request) {
-	if err := json.NewEncoder(w).Encode(GetDiskVersion()); err != nil {
+	if err := json.NewEncoder(w).Encode(GetDiskVersion(false)); err != nil {
 		failOnError(err, "Unable to load the message")
 		panic(err)
 	}
@@ -103,6 +104,34 @@ func GetInstalledVersion(w http.ResponseWriter, r *http.Request) {
 func Uninstall(w http.ResponseWriter, r *http.Request) {
 
 	go StartUninstallProcedure()
+
+	if err := json.NewEncoder(w).Encode(struct {
+		Success bool `json:"success"`
+	}{true}); err != nil {
+		failOnError(err, "Unable to load the message")
+		panic(err)
+	}
+}
+
+// RunCommand Démarre ou arrête un processus (exécute une commande)
+func RunCommand(w http.ResponseWriter, r *http.Request) {
+
+	defer r.Body.Close()
+	decoder := json.NewDecoder(r.Body)
+
+	var post ExecCommand
+	err := decoder.Decode(&post)
+
+	if err != nil {
+		if err := json.NewEncoder(w).Encode(struct {
+			Success bool `json:"failed"`
+		}{true}); err != nil {
+			failOnError(err, "Unable to load the message")
+			panic(err)
+		}
+	}
+
+	go Run(post)
 
 	if err := json.NewEncoder(w).Encode(struct {
 		Success bool `json:"success"`
