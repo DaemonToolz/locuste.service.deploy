@@ -11,6 +11,8 @@ LOCUSTE - Service de réception / déploiement et mise à jour
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=bugs)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DaemonToolz_locuste.service.deploy&metric=coverage)](https://sonarcloud.io/dashboard?id=DaemonToolz_locuste.service.deploy)
 
+<img width="2610" alt="locuste-uploader-banner" src="https://user-images.githubusercontent.com/6602774/84285953-5aec9e80-ab3e-11ea-8a18-60a0f613ef0b.png">
+
 Le project Locuste se divise en 4 grandes sections : 
 * Automate (Drone Automata) PYTHON (https://github.com/DaemonToolz/locuste.drone.automata)
 * Unité de contrôle (Brain) GOLANG (https://github.com/DaemonToolz/locuste.service.brain)
